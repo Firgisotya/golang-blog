@@ -27,5 +27,4 @@ func Seed() {
 
 	fmt.Println("Seeders Complete...")
 
-	configs.CloseConnection()
 }

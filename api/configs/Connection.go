@@ -10,16 +10,16 @@ import (
 
 var DB *gorm.DB
 
-func SetupConnection() error {
+func SetupConnection() (*gorm.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", Config.DBUSER, Config.DBPASS, Config.DBHOST, Config.DBPORT, Config.DBNAME)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return fmt.Errorf("failed to connect to database: %w", err)
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
 	sqlDB, err := db.DB()
 	if err != nil {
-		return fmt.Errorf("failed to connect to database: %w", err)
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
 	}
 
 	sqlDB.SetMaxIdleConns(10)
@@ -28,11 +28,11 @@ func SetupConnection() error {
 
 	DB = db
 
-	return nil
+	return db, nil
 
 }
 
-func CloseConnection() error {
+func CloseConnection(*gorm.DB) error {
 	sqlDB, err := DB.DB()
 	if err != nil {
 		return fmt.Errorf("failed to close database: %w", err)

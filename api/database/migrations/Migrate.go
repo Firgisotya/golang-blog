@@ -28,5 +28,4 @@ func Migrate() {
 
 	fmt.Println("Migrations Complete...")
 
-	configs.CloseConnection()
 }
