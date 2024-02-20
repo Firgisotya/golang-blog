@@ -6,6 +6,7 @@ import (
 	"go-blog/api/configs"
 	"go-blog/api/database/migrations"
 	"go-blog/api/database/seeders"
+	"go-blog/api/routes"
 	"log"
 	"net/http"
 	"os"
@@ -33,7 +34,7 @@ func init() {
 // @in Header
 // @name Authorization
 
-// @host localhost:9876
+// @host localhost:9000
 // @BasePath /api
 func main() {
 
@@ -57,14 +58,14 @@ func main() {
 }
 
 func runHTTPServer() {
-	// r := routes.SetupRoute()
+	r := routes.SetupRoute()
 
 	serve := &http.Server{
 		Addr:         fmt.Sprintf(":%s", configs.Config.PORT),
 		WriteTimeout: configs.Config.WRITETIMEOUT * 10,
 		ReadTimeout:  configs.Config.READTIMEOUT * 10,
 		IdleTimeout:  time.Second * 60,
-		// Handler:      r,
+		Handler:      r,
 	}
 
 	go func() {
